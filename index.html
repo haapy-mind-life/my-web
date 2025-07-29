@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나에게로 가는 길: 인터랙티브 여정</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Warm Embrace -->
+    <!-- Application Structure Plan: The application is structured as a four-part interactive journey, mirroring the report's core themes but designed for non-linear exploration. A fixed top navigation allows users to jump between sections: 1) The World You Left (visualizing the perfectionism loop), 2) New Wisdom (exploring philosophies via an interactive tab system), 3) The Core of Change (featuring a dynamic comparison table for the 'Map of Change'), and 4) The Garden of Growth (presenting practical exercises in an accordion format). This structure transforms passive reading into an active, engaging exploration, making abstract concepts more tangible and personal for the user. -->
+    <!-- Visualization & Content Choices: Report Info: Perfectionism Cycle -> Goal: Organize/Relationships -> Viz: Interactive HTML/CSS Diagram -> Interaction: Click to reveal text -> Justification: Visually clarifies the abstract concept of the "trap" of perfectionism. | Report Info: Map of Change Table -> Goal: Compare -> Viz: Dynamic Two-Column Layout (HTML/JS) -> Interaction: Click topic to update columns -> Justification: More engaging and focused than a static table. | Report Info: Practical Exercises -> Goal: Inform -> Viz: Accordion (HTML/JS) -> Interaction: Click to expand/collapse -> Justification: Keeps the UI clean while providing easy access to detailed instructions. No charts (e.g., Chart.js) are used as the source report is entirely qualitative and contains no quantitative data suitable for charting. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #FDFBF8;
+            color: #383430;
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link.active {
+            color: #C08420;
+            border-bottom-color: #C08420;
+        }
+        .nav-link:hover {
+            color: #C08420;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .tab-button.active {
+            background-color: #14B8A6;
+            color: white;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .cycle-node {
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .cycle-node.active, .cycle-node:hover {
+            transform: scale(1.05);
+            background-color: #14B8A6;
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(20, 184, 166, 0.3);
+        }
+        .cycle-arrow {
+            font-size: 2rem;
+            color: #9CA3AF;
+        }
+        .comparison-item.active {
+            background-color: #F0FDF4;
+            border-left-color: #14B8A6;
+        }
+    </style>
+</head>
+<body class="bg-[#FDFBF8]">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4">
+            <div class="flex justify-center items-center h-16">
+                <div class="flex space-x-4 md:space-x-8 text-sm md:text-base">
+                    <a href="#section1" class="nav-link py-2 border-b-2 border-transparent">떠나온 세계</a>
+                    <a href="#section2" class="nav-link py-2 border-b-2 border-transparent">새로운 지혜</a>
+                    <a href="#section3" class="nav-link py-2 border-b-2 border-transparent">변화의 핵심</a>
+                    <a href="#section4" class="nav-link py-2 border-b-2 border-transparent">성장의 정원</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+        <section id="intro" class="text-center mb-16 animate-fade-in">
+            <h1 class="text-3xl md:text-4xl font-bold mb-4 text-[#C08420]">자아로의 여정</h1>
+            <p class="max-w-3xl mx-auto text-stone-600 leading-relaxed">
+                ‘내가 진짜 원하는 변화’는 내면을 깊이 들여다보고, 과거의 자신과 결별하며 새로운 삶의 방식을 향해 나아가려는 진솔하고 용기 있는 선언입니다. 이 여정은 ‘정답’을 추구하던 삶에서 벗어나, 실수와 우연, 그리고 불완전함마저 끌어안는 ‘나에게로 가는 길’을 탐색하는 과정입니다. 이 인터랙티브 보고서가 그 길을 걷는 당신에게 따뜻하고 깊이 있는 동반자가 되기를 바랍니다.
+            </p>
+        </section>
+
+        <div id="app-content">
+            <section id="section1" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">제 1부: 완벽주의의 해부</h2>
+                    <p class="text-stone-500">당신이 떠나온 세계를 명확히 이해하는 것에서 변화는 시작됩니다.</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-2">완벽주의의 심리적 고리</h3>
+                    <p class="text-center text-stone-600 mb-8">각 단계를 클릭하여 상세한 설명을 확인해보세요.</p>
+                    <div id="cycle-diagram" class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 text-center">
+                        <div class="cycle-node p-4 rounded-full border-2 border-gray-200 bg-gray-50 w-48 h-48 flex items-center justify-center" data-cycle="1">완벽 추구</div>
+                        <div class="cycle-arrow transform md:-rotate-0">→</div>
+                        <div class="cycle-node p-4 rounded-full border-2 border-gray-200 bg-gray-50 w-48 h-48 flex items-center justify-center" data-cycle="2">불가피한 실패/실수</div>
+                        <div class="cycle-arrow transform md:-rotate-0">→</div>
+                        <div class="cycle-node p-4 rounded-full border-2 border-gray-200 bg-gray-50 w-48 h-48 flex items-center justify-center" data-cycle="3">가혹한 자기 비판</div>
+                        <div class="cycle-arrow transform md:-rotate-0">→</div>
+                        <div class="cycle-node p-4 rounded-full border-2 border-gray-200 bg-gray-50 w-48 h-48 flex items-center justify-center" data-cycle="4">인정 갈망</div>
+                    </div>
+                    <div id="cycle-explanation" class="mt-8 p-6 bg-teal-50 border-l-4 border-teal-500 rounded-r-lg min-h-[150px] text-stone-700 leading-relaxed">
+                        이곳에 설명이 표시됩니다.
+                    </div>
+                </div>
+            </section>
+
+            <section id="section2" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">제 2부: 우회의 지혜와 불완전함의 미학</h2>
+                    <p class="text-stone-500">당신이 들어서는 새로운 세계를 뒷받침하는 지혜를 탐험합니다.</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <div class="flex justify-center border-b mb-6">
+                        <button class="tab-button flex-1 py-3 px-4 text-stone-600 font-medium" data-tab="serendipity">세렌디피티</button>
+                        <button class="tab-button flex-1 py-3 px-4 text-stone-600 font-medium" data-tab="wabisabi">와비사비</button>
+                        <button class="tab-button flex-1 py-3 px-4 text-stone-600 font-medium" data-tab="growth">성장 마인드셋</button>
+                    </div>
+                    <div id="tab-content" class="min-h-[400px]">
+                        <!-- Content will be injected by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <section id="section3" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">제 3부: 자아로의 귀환</h2>
+                    <p class="text-stone-500">변화의 핵심 훈련법을 구체적으로 알아봅니다.</p>
+                </div>
+                <div class="bg-white p-6 md:p-8 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-semibold text-center mb-8">변화의 지도: 과거와 미래의 비교</h3>
+                    <div class="flex flex-col md:flex-row gap-8">
+                        <div class="md:w-1/3">
+                            <h4 class="font-semibold mb-4 text-center text-stone-700">경험의 영역</h4>
+                            <ul id="comparison-menu" class="space-y-2">
+                                <!-- Menu items will be injected by JS -->
+                            </ul>
+                        </div>
+                        <div class="md:w-2/3 flex gap-4">
+                            <div class="w-1/2">
+                                <h4 class="font-semibold mb-4 text-center text-red-500">떠나온 길</h4>
+                                <div id="comparison-past" class="p-4 bg-red-50 rounded-lg min-h-[200px] text-stone-600 leading-relaxed"></div>
+                            </div>
+                            <div class="w-1/2">
+                                <h4 class="font-semibold mb-4 text-center text-green-600">나아갈 길</h4>
+                                <div id="comparison-future" class="p-4 bg-green-50 rounded-lg min-h-[200px] text-stone-600 leading-relaxed"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section4" class="content-section">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-2">제 4부: 변화의 경작</h2>
+                    <p class="text-stone-500">새로운 존재 방식을 일상에서 기르는 실천적 경로를 안내합니다.</p>
+                </div>
+                <div id="accordion-container" class="space-y-4">
+                    <!-- Accordion items will be injected by JS -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            const data = {
+                cycle: {
+                    '1': { title: '완벽 추구', text: '비현실적으로 높은 기준을 설정하고, 그 기준에 미치지 못했을 때 가혹한 자기 비판에 빠지며, 자신의 가치를 오직 성과와 성취에만 두는 경향입니다. 이는 ‘전부 아니면 전무’라는 흑백논리적 사고로 이어집니다.' },
+                    '2': { title: '불가피한 실패/실수', text: '완벽이라는 비현실적인 목표는 필연적으로 실수나 실패라는 결과를 낳습니다. 삶의 본질은 예측 불가능성과 복잡성에 있음에도, 직선 경로라는 허구의 기준에 자신의 삶을 끊임없이 비교하며 좌절하게 됩니다.' },
+                    '3': { title: '가혹한 자기 비판', text: '실패의 순간, 내면의 비판가가 활성화되어 자신을 가혹하게 몰아붙입니다. 이는 만성적인 불안, 우울, 소진(burnout)으로 이어지며, ‘나는 충분하지 않다’는 느낌을 지속시킵니다.' },
+                    '4': { title: '인정 갈망', text: '자기 비판이 주는 고통은 타인의 인정을 통해 위안을 얻으려는 절박한 욕구를 만듭니다. 자기 가치가 타인의 평가에 종속되고, 삶은 끊임없이 타인의 인정을 구걸하는 무대가 되어버립니다. 이는 다시 완벽 추구를 강화하는 악순환을 만듭니다.' }
+                },
+                tabs: {
+                    serendipity: {
+                        title: '세렌디피티: ‘실수’의 창조적 힘',
+                        content: `
+                            <p class="mb-6 text-stone-600 leading-relaxed">계획되지 않은 길에서 예기치 못한 보물을 발견하는 것, 즉 ‘세렌디피티(Serendipity)’는 인류 역사의 위대한 진보를 이끌어온 동력이었습니다. 당신의 ‘실수’와 ‘우회’는 실패한 실험이 아니라, 예기치 못한 데이터입니다.</p>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="p-6 bg-stone-50 rounded-lg">
+                                    <h4 class="font-bold text-lg mb-2 text-teal-700">사례 1: 페니실린의 발견</h4>
+                                    <p class="text-sm text-stone-600">알렉산더 플레밍은 정돈되지 않은 실험실에서 우연히 푸른곰팡이가 세균을 녹이는 현상을 발견했습니다. 단순한 ‘실패’ 속에서 인류를 구원할 ‘발견’의 실마리를 찾아낸 것은, 그가 가진 ‘준비된 마음’ 덕분이었습니다.</p>
+                                </div>
+                                <div class="p-6 bg-stone-50 rounded-lg">
+                                    <h4 class="font-bold text-lg mb-2 text-teal-700">사례 2: 포스트잇의 탄생</h4>
+                                    <p class="text-sm text-stone-600">강력 접착제 개발에 ‘실패’하여 만들어진 약한 접착제. 수년간 쓸모없어 보였지만, 동료의 ‘불편함’이라는 다른 문제와 만나 사무실의 필수품 포스트잇으로 재탄생했습니다. 우회로의 가치를 보여주는 강력한 사례입니다.</p>
+                                </div>
+                            </div>
+                        `
+                    },
+                    wabisabi: {
+                        title: '와비사비(侘寂): 불완전함의 깊은 아름다움',
+                        content: `
+                            <div class="text-center">
+                                <p class="mb-6 text-stone-600 leading-relaxed">와비사비는 ‘불완전하고, 비영구적이며, 미완성인 것들의 아름다움’을 포용하는 세계관입니다. 삶의 흠집, 마음의 동요, 미완성의 모습들은 제거해야 할 결점이 아니라, 삶이 진정으로 살아있다는 증거이자 고유한 이야기의 흔적입니다.</p>
+                                <blockquote class="p-6 bg-stone-50 border-l-4 border-amber-500 rounded-r-lg italic text-stone-700 text-lg">
+                                    "깨진 찻잔을 금으로 이어 붙여 그 상처를 더욱 아름다운 무늬로 승화시키는 ‘킨츠기(金継ぎ)’ 기법처럼, 와비사비는 상처와 불완전함을 숨기지 않고 오히려 그것을 통해 더 깊은 아름다움을 발견하라고 가르칩니다."
+                                </blockquote>
+                                <p class="mt-6 text-stone-600 leading-relaxed">불완전함을 완벽함으로 가는 중간 단계로 보지 않고, 그 자체로 온전하게 인정하는 것. 이것이 당신이 기르고자 하는 따뜻함, 여유, 유연함과 직접적으로 연결됩니다.</p>
+                            </div>
+                        `
+                    },
+                    growth: {
+                        title: '성장 마인드셋: ‘실패’를 성장의 엔진으로',
+                        content: `
+                            <p class="mb-6 text-stone-600 leading-relaxed">스탠퍼드 대학의 심리학자 캐럴 드웩이 제시한 성장 마인드셋은 능력은 노력과 학습을 통해 개발될 수 있다고 믿는 태도입니다. <strong>“삶의 모든 ‘우회’와 ‘실패’도 내 성장의 일부로 받아들이고 싶다”</strong>는 당신의 다짐은 성장 마인드셋을 채택하겠다는 선언과 같습니다.</p>
+                            <div class="grid md:grid-cols-2 gap-6 text-center">
+                                <div class="p-6 bg-red-50 rounded-lg">
+                                    <h4 class="font-bold text-lg mb-2 text-red-700">고정 마인드셋</h4>
+                                    <p class="text-sm text-stone-600">능력은 타고나는 것. 실패는 나의 능력 부족에 대한 영구적인 판결. 도전은 위협. </p>
+                                </div>
+                                <div class="p-6 bg-green-50 rounded-lg">
+                                    <h4 class="font-bold text-lg mb-2 text-green-700">성장 마인드셋</h4>
+                                    <p class="text-sm text-stone-600">능력은 개발되는 것. 실패는 성장을 위한 귀중한 피드백. 도전은 배움의 기회.</p>
+                                </div>
+                            </div>
+                        `
+                    }
+                },
+                comparison: [
+                    { topic: '자아관', past: '나의 가치는 조건부이며, 성과와 타인의 인정에 달려있다.', future: '나는 존재 자체로 고유한 가치를 지닌다. 있는 그대로 괜찮다.' },
+                    { topic: '실수/실패에 대한 반응', past: '나의 능력에 대한 최종 판결. 수치심과 후회의 원천이며, 반드시 피해야 할 대상이다.', future: '성장과 배움의 기회. 모든 인간이 겪는 자연스러운 경험의 일부이다.' },
+                    { topic: '내면의 대화', past: '가혹한 자기 비판, 판단, 압박 (“너는 ~해야만 해”, “너는 ~했어야지”).', future: '자기 친절, 이해, 격려 (“괜찮아”, “여기서 무엇을 배울 수 있을까?”).' },
+                    { topic: '도전에 대한 관점', past: '나의 결점을 드러낼 수 있는 위협적인 것.', future: '새로운 기술을 배우고, 능력을 확장하며, 발전할 수 있는 기회.' },
+                    { topic: '동기 부여의 원천', past: '실패에 대한 두려움, 외부의 인정과 칭찬에 대한 갈망.', future: '배움, 성장, 연결에 대한 내재적 가치와 열망.' },
+                    { topic: '삶의 지향점', past: '흠결 없고 직선적인 완벽함의 추구.', future: '불완전하고, 덧없으며, 진정한 아름다움의 포용 (와비사비).' },
+                    { topic: '관계의 목표', past: '나의 가치를 증명하고, 나를 해명하며, 인정을 얻어내는 것.', future: '현재의 모습 그대로, 진정성 있게 만나고 연결되는 것.' }
+                ],
+                accordion: [
+                    { title: '자기 자비 명상 안내', content: `
+                        <p>조용한 곳에서 편안한 자세로 앉아 부드럽게 눈을 감고, 다음 3단계를 따라 자신을 안내해 봅니다.</p>
+                        <ol class="list-decimal list-inside mt-4 space-y-2 text-stone-600">
+                            <li><strong>마음챙김의 순간:</strong> "지금 이 순간, 내 마음이 힘들구나." 자신의 고통이나 어려움을 부드럽게 인정합니다.</li>
+                            <li><strong>보편적 인간성의 순간:</strong> "힘든 것은 삶의 일부야. 나만 겪는 일이 아니야." 이 어려움이 당신을 세상과 단절시키는 것이 아니라, 모든 인간과 연결시켜주는 경험임을 상기합니다.</li>
+                            <li><strong>자기 친절의 순간:</strong> 가슴에 부드럽게 손을 얹고, 스스로에게 다정한 말을 건네봅니다. "내가 나에게 친절할 수 있기를.", "내가 나를 있는 그대로 받아들일 수 있기를."</li>
+                        </ol>
+                    `},
+                    { title: '“친구에게라면?” 연습', content: `
+                        <p>자기 비판의 목소리가 들려올 때, 잠시 멈추고 스스로에게 질문을 던져보세요.</p>
+                        <p class="mt-4 p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg"><strong>"만약 내 가장 소중한 친구가 지금 나와 똑같은 상황에 처해 있다면, 나는 그 친구에게 뭐라고 말해줄까?"</strong></p>
+                        <p class="mt-4">당신은 아마 비난 대신 공감과 격려, 그리고 현실적인 조언을 건넬 것입니다. 그 따뜻하고 지혜로운 말을 그대로 자기 자신에게 들려주세요. 이 간단한 관점의 전환은 자기 비판의 습관을 깨는 강력한 도구가 됩니다.</p>
+                    `},
+                    { title: '성찰을 위한 감사 일기', content: `
+                        <p>단순히 감사한 일을 나열하는 것을 넘어, 당신의 변화 목표와 연결된 구체적인 질문을 통해 일기를 써보는 것이 도움이 될 수 있습니다.</p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-stone-600">
+                            <li><strong>우회로 일기:</strong> "오늘 나의 하루에서 예상치 못한 '우회로'는 무엇이었나? 그 길로 들어섰기 때문에 새롭게 발견하거나 느낀 것은 무엇인가?"</li>
+                            <li><strong>불완전함 수용 일기:</strong> "오늘 내가 불완전하다고 느꼈던 순간은 언제였나? 그 순간의 나에게 어떤 다정한 말을 건네줄 수 있을까?"</li>
+                            <li><strong>성장 일기:</strong> "오늘 마주한 어려움이나 실수를 통해 무엇을 배울 수 있었나? 이 경험이 미래의 나에게 어떤 도움이 될까?"</li>
+                        </ul>
+                    `},
+                    { title: '나태주 시인의 ‘풀꽃’ 명상', content: `
+                        <div class="text-center p-6 bg-stone-50 rounded-lg">
+                            <p class="text-lg leading-loose italic">"자세히 보아야 예쁘다<br>오래 보아야 사랑스럽다<br>너도 그렇다"</p>
+                            <p class="mt-2 text-sm text-stone-500">— 나태주, &lt;풀꽃&gt;</p>
+                        </div>
+                        <p class="mt-4">이 시는 자기 자신을 향한 시선에 대한 심오한 가르침을 담고 있습니다. ‘풀꽃’은 바로 우리 자신입니다.</p>
+                        <ul class="list-disc list-inside mt-4 space-y-2 text-stone-600">
+                            <li><strong>자세히 보아야 예쁘다:</strong> 마음챙김을 통한 자기 관찰의 실천입니다.</li>
+                            <li><strong>오래 보아야 사랑스럽다:</strong> 인내심 있는 자기 자비의 실천입니다.</li>
+                            <li><strong>너도 그렇다:</strong> 궁극적인 자기 수용의 선언입니다.</li>
+                        </ul>
+                    `}
+                ]
+            };
+
+            function showSection(hash) {
+                const targetId = hash ? hash.substring(1) : 'section1';
+                
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${targetId}`);
+                });
+
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+            }
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    history.pushState(null, '', this.getAttribute('href'));
+                    showSection(this.getAttribute('href'));
+                });
+            });
+
+            window.addEventListener('popstate', () => {
+                showSection(window.location.hash);
+            });
+
+            showSection(window.location.hash || '#section1');
+
+            // Section 1: Cycle Diagram
+            const cycleNodes = document.querySelectorAll('.cycle-node');
+            const cycleExplanation = document.getElementById('cycle-explanation');
+            
+            cycleNodes.forEach(node => {
+                node.addEventListener('click', function() {
+                    const cycleId = this.dataset.cycle;
+                    cycleNodes.forEach(n => n.classList.remove('active'));
+                    this.classList.add('active');
+                    cycleExplanation.innerHTML = `
+                        <h4 class="font-bold mb-2 text-teal-800">${data.cycle[cycleId].title}</h4>
+                        <p>${data.cycle[cycleId].text}</p>
+                    `;
+                });
+            });
+            cycleNodes[0].click();
+
+            // Section 2: Tabs
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContent = document.getElementById('tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const tabId = this.dataset.tab;
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    tabContent.innerHTML = `
+                        <h3 class="text-xl font-semibold text-center mb-6">${data.tabs[tabId].title}</h3>
+                        <div>${data.tabs[tabId].content}</div>
+                    `;
+                });
+            });
+            tabButtons[0].click();
+
+            // Section 3: Comparison
+            const comparisonMenu = document.getElementById('comparison-menu');
+            const comparisonPast = document.getElementById('comparison-past');
+            const comparisonFuture = document.getElementById('comparison-future');
+
+            data.comparison.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `<button class="comparison-item w-full text-left p-3 rounded-lg border-l-4 border-transparent transition" data-index="${index}">${item.topic}</button>`;
+                comparisonMenu.appendChild(li);
+            });
+            
+            const comparisonItems = document.querySelectorAll('.comparison-item');
+            comparisonItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const index = this.dataset.index;
+                    comparisonItems.forEach(i => i.parentElement.classList.remove('active'));
+                    this.parentElement.classList.add('active');
+                    comparisonPast.innerHTML = `<p>${data.comparison[index].past}</p>`;
+                    comparisonFuture.innerHTML = `<p>${data.comparison[index].future}</p>`;
+                });
+            });
+            comparisonItems[0].click();
+
+            // Section 4: Accordion
+            const accordionContainer = document.getElementById('accordion-container');
+            data.accordion.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white rounded-xl shadow-lg overflow-hidden';
+                div.innerHTML = `
+                    <button class="accordion-button w-full p-6 text-left font-semibold text-lg flex justify-between items-center">
+                        <span>${item.title}</span>
+                        <span class="transform transition-transform duration-300">▼</span>
+                    </button>
+                    <div class="accordion-content px-6 pb-6 text-stone-600 leading-relaxed">
+                        ${item.content}
+                    </div>
+                `;
+                accordionContainer.appendChild(div);
+            });
+
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('span:last-child');
+                    
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                        document.querySelectorAll('.accordion-button span:last-child').forEach(i => i.style.transform = 'rotate(0deg)');
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
